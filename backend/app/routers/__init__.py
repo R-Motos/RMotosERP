@@ -1,0 +1,1 @@
+from app.routers import categories, brands, tags, products, clients, users, auth, suppliers, inventory_movements, purchase_orders, purchase_receipts, sales, financial_movements, dashboard, audit_logs, system_config, coupons, roles
