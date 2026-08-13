@@ -149,9 +149,14 @@ class HttpClient {
   }
 
   async post<T>(endpoint: string, data?: unknown, optionsOrSignal?: RequestInit | AbortSignal): Promise<T> {
-    const options: RequestInit = typeof optionsOrSignal === 'undefined' || optionsOrSignal instanceof AbortSignal
-      ? { method: 'POST', body: data ? JSON.stringify(data) : undefined, signal: optionsOrSignal }
-      : { method: 'POST', body: data instanceof FormData ? data : JSON.stringify(data), ...optionsOrSignal }
+    const isFormData = data instanceof FormData
+    const options: RequestInit = {
+      method: 'POST',
+      body: isFormData ? data : (data ? JSON.stringify(data) : undefined),
+      ...(typeof optionsOrSignal === 'undefined' || optionsOrSignal instanceof AbortSignal
+        ? { signal: optionsOrSignal }
+        : optionsOrSignal),
+    }
     return this.request<T>(endpoint, options)
   }
 
