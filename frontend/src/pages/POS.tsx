@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { POSLayout, SearchBar, ProductGrid, ProductCard, CartPanel, CartItem, PaymentFooter, EmptyCart, EmptyProducts } from '@/components/pos'
 import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Modal } from '@/components/ui/Modal'
@@ -43,6 +44,7 @@ export function POS() {
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false)
   const [clientQuery, setClientQuery] = useState('')
   const [couponQuery, setCouponQuery] = useState('')
+  const [cartPulse, setCartPulse] = useState(false)
 
   const { clients, isLoading: isLoadingClients, executeFetch: fetchClients } = useClients()
   const { coupons, isLoading: isLoadingCoupons, executeFetch: fetchCoupons } = useCoupons()
@@ -57,6 +59,14 @@ export function POS() {
   useEffect(() => {
     fetchCoupons({ q: couponQuery, estado: 'activo' })
   }, [couponQuery, fetchCoupons])
+
+  useEffect(() => {
+    if (itemsCount > 0) {
+      setCartPulse(true)
+      const timer = setTimeout(() => setCartPulse(false), 400)
+      return () => clearTimeout(timer)
+    }
+  }, [itemsCount])
 
   useEffect(() => {
     if (selectedCoupon) {
@@ -279,7 +289,12 @@ export function POS() {
           <CartPanel
             header={
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
+                {itemsCount > 0 && (
+                  <Badge variant="primary" className="animate-pulse">{itemsCount}</Badge>
+                )}
+              </div>
               {items.length > 0 && (
                 <Button variant="ghost" size="sm" onClick={clearCart} className="text-neutral-500">
                   Limpiar
@@ -379,14 +394,19 @@ export function POS() {
       </div>
 
       <div className="lg:hidden">
-          <Button
-            variant="primary"
-            size="lg"
-            className="fixed bottom-4 right-4 z-40 shadow-lg rounded-full w-14 h-14"
-            onClick={() => setIsCartOpen(true)}
-          >
-            <ShoppingCart size={22} />
-          </Button>
+        <motion.button
+          animate={{ scale: cartPulse ? 1.15 : 1 }}
+          transition={{ type: 'spring', damping: 15, stiffness: 300 }}
+          onClick={() => setIsCartOpen(true)}
+          className="fixed bottom-4 right-4 z-40 shadow-lg rounded-full w-14 h-14 bg-primary-600 text-white flex items-center justify-center"
+        >
+          <ShoppingCart size={22} />
+          {itemsCount > 0 && (
+            <Badge variant="primary" className="absolute -top-1 -right-1 animate-bounce">
+              {itemsCount}
+            </Badge>
+          )}
+        </motion.button>
 
         <AnimatePresence>
           {isCartOpen && (
@@ -398,7 +418,12 @@ export function POS() {
               className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] flex flex-col"
             >
               <div className="shrink-0 px-4 py-3 border-b border-neutral-200 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
+                  {itemsCount > 0 && (
+                    <Badge variant="primary" className="animate-pulse">{itemsCount}</Badge>
+                  )}
+                </div>
                 <Button variant="ghost" size="sm" onClick={() => setIsCartOpen(false)} className="text-neutral-500">
                   Cerrar
                 </Button>

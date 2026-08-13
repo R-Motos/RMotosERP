@@ -16,6 +16,7 @@ export function CartPanel({ header, children, footer, className }: CartPanelProp
         className
       )}
     >
+      <div className="shrink-0 h-1 bg-gradient-to-r from-primary-500 via-primary-400 to-primary-600" />
       {header && (
         <div className="shrink-0 px-5 py-4 border-b border-neutral-200">
           {header}
