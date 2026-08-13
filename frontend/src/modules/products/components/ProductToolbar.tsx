@@ -65,6 +65,7 @@ export function ProductToolbar({ onRefresh, onCreate, isLoading, total }: Produc
       if (result.errors.length > 0) {
         console.warn('Errores de importación:', result.errors)
       }
+      onRefresh?.()
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Error al importar productos'
       addToast({ type: 'error', message })

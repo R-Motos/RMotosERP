@@ -43,7 +43,7 @@ export function Table<T>({
                     key={column.key}
                     className={cn(
                       'px-3 py-2.5 sm:px-4 sm:py-3 font-semibold text-neutral-700 bg-neutral-50 whitespace-nowrap',
-                      stickyFirstColumn && idx === 0 && 'sticky left-0 z-30 bg-neutral-50',
+                      stickyFirstColumn && idx === 0 && 'sm:sticky sm:left-0 sm:z-30 bg-neutral-50',
                       column.className
                     )}
                   >
@@ -63,7 +63,7 @@ export function Table<T>({
                       key={column.key}
                       className={cn(
                         'px-3 py-2.5 sm:px-4 sm:py-3 text-neutral-900 whitespace-nowrap',
-                        stickyFirstColumn && idx === 0 && 'sticky left-0 z-10 bg-white',
+                        stickyFirstColumn && idx === 0 && 'sm:sticky sm:left-0 sm:z-10 bg-white',
                         column.className
                       )}
                     >

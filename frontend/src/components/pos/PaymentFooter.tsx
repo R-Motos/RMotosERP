@@ -43,7 +43,7 @@ export function PaymentFooter({ total, itemsCount, onPay, disabled, loading, act
       <div className="flex gap-2">
         {action}
         <Button
-          variant="primary"
+          variant="secondary"
           size="lg"
           className="flex-1 h-12 text-base font-semibold"
           disabled={disabled || itemsCount === 0}

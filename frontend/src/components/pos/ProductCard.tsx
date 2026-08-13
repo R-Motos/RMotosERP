@@ -1,6 +1,5 @@
 import { ReactNode, forwardRef } from 'react'
 import { cn } from '@/utils/classNames'
-import { Button } from '@/components/ui/Button'
 
 const formatCOP = (value: number) => {
   return new Intl.NumberFormat('es-CO', {
@@ -74,23 +73,6 @@ export const ProductCard = forwardRef<HTMLDivElement, ProductCardProps>(
             <span className="text-base font-semibold text-neutral-900">
               {formatCOP(numericPrice)}
             </span>
-            {onAdd && (
-              <Button
-                variant="primary"
-                size="sm"
-                icon={<span className="text-lg leading-none">+</span>}
-                onClick={e => {
-                  e.stopPropagation()
-                  if (gestionarInventario && !sinStock) {
-                    onAdd()
-                  }
-                }}
-                className={cn('shrink-0', (!gestionarInventario || sinStock) && 'opacity-50 cursor-not-allowed')}
-                disabled={!gestionarInventario || sinStock}
-              >
-                Agregar
-              </Button>
-            )}
           </div>
         </div>
       </div>

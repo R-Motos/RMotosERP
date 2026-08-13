@@ -71,16 +71,9 @@ export function POS() {
     }
   }, [selectedCoupon, setDiscount, setSelectedCoupon])
 
-  const focusSearch = useCallback(() => {
-    setTimeout(() => searchInputRef.current?.focus(), 0)
-  }, [])
-
   const handleAddItem = useCallback((product: Producto) => {
-    const success = addItem(product, 1)
-    if (success) {
-      setTimeout(focusSearch, 50)
-    }
-  }, [addItem, focusSearch])
+    addItem(product, 1)
+  }, [addItem])
 
   const handleOpenPayment = useCallback(() => {
     setIsPaymentOpen(true)
@@ -91,7 +84,6 @@ export function POS() {
   const handleClosePayment = useCallback(() => {
     setIsPaymentOpen(false)
     resetPayment()
-    searchInputRef.current?.focus()
   }, [resetPayment])
 
   const applyCoupon = useCallback((coupon: Cupon) => {
@@ -132,10 +124,9 @@ export function POS() {
         resetPayment()
         clearCart()
         refreshProducts()
-        focusSearch()
       }, 1800)
     }
-  }, [handlePay, selectedClient, refreshProducts, focusSearch, resetPayment, clearCart, setDiscount])
+  }, [handlePay, selectedClient, refreshProducts, resetPayment, clearCart, setDiscount])
 
   const handleQuickCash = useCallback(() => {
     setCashReceived(String(Math.round(total)))
@@ -148,13 +139,12 @@ export function POS() {
           handleClosePayment()
         } else if (searchQuery) {
           setSearchQuery('')
-          focusSearch()
         }
       }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isPaymentOpen, searchQuery, handleClosePayment, focusSearch, setSearchQuery])
+  }, [isPaymentOpen, searchQuery, handleClosePayment, setSearchQuery])
 
   const handleProductKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (!productGridRef.current) return
@@ -249,7 +239,7 @@ export function POS() {
               </div>
             )}
             {filteredProducts.length === 0 ? (
-              <EmptyProducts onClearSearch={() => { setSearchQuery(''); focusSearch() }} />
+              <EmptyProducts onClearSearch={() => { setSearchQuery('') }} />
             ) : (
               <>
                 <ProductGrid ref={productGridRef} onKeyDown={handleProductKeyDown}>

@@ -14,19 +14,23 @@ const sizeMap = {
 }
 
 export function ProductImage({ src, name, size = 'md' }: ProductImageProps) {
-  if (src) {
-    return (
-      <img
-        src={src}
-        alt={name}
-        className={cn('rounded-lg object-cover', sizeMap[size])}
-      />
-    )
-  }
-
   return (
-    <div className={cn(sizeMap[size], 'rounded-lg bg-neutral-100 flex items-center justify-center')}>
-      <Package size={size === 'lg' ? 24 : 16} className="text-neutral-400" />
+    <div className={cn(sizeMap[size], 'rounded-lg bg-neutral-100 flex items-center justify-center overflow-hidden shrink-0')}>
+      {src ? (
+        <img
+          src={src}
+          alt={name}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement
+            target.style.display = 'none'
+          }}
+        />
+      ) : (
+        <Package size={size === 'lg' ? 24 : 16} className="text-neutral-400" />
+      )}
     </div>
   )
 }
