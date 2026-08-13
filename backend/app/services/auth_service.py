@@ -1,9 +1,9 @@
+import bcrypt
 from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import HTTPException, status
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from sqlalchemy.orm import Session, selectinload
 
 from app.config import settings
@@ -12,15 +12,12 @@ from app.services import user_service
 from app.services.permission_service import get_user_permissions
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 def hash_pin(pin: str) -> str:
-    return pwd_context.hash(pin)
+    return bcrypt.hashpw(pin.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 
 def verify_pin(plain_pin: str, hashed_pin: str) -> bool:
-    return pwd_context.verify(plain_pin, hashed_pin)
+    return bcrypt.checkpw(plain_pin.encode('utf-8'), hashed_pin.encode('utf-8'))
 
 
 def authenticate_user(db: Session, username: str | None, pin: str) -> Optional[User]:
