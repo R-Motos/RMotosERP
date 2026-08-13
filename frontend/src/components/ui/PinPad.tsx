@@ -31,6 +31,12 @@ const KEYS: readonly KeyDef[] = [
 export function PinPad({ value, onChange, maxLength = 4 }: PinPadProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const isEditable = document.activeElement instanceof HTMLInputElement ||
+        document.activeElement instanceof HTMLTextAreaElement ||
+        document.activeElement instanceof HTMLSelectElement
+
+      if (isEditable) return
+
       if (e.key >= '0' && e.key <= '9') {
         e.preventDefault()
         if (value.length < maxLength) {

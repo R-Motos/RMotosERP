@@ -13,11 +13,20 @@ export function LoginScreen() {
   const { login, error, isAuthenticated, user } = useAuth()
   const lastAttemptRef = useRef<{ u: string; p: string } | null>(null)
   const submittingRef = useRef(false)
+  const prevPinLengthRef = useRef(0)
 
   useEffect(() => {
     if (!username.trim() || pin.length !== 4) {
+      prevPinLengthRef.current = pin.length
       return
     }
+
+    if (prevPinLengthRef.current === 4) {
+      prevPinLengthRef.current = pin.length
+      return
+    }
+
+    prevPinLengthRef.current = pin.length
 
     const current = `${username.trim()}|${pin}`
     const last = lastAttemptRef.current
