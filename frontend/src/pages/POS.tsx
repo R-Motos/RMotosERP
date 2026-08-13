@@ -1,10 +1,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { POSLayout, SearchBar, ProductGrid, ProductCard, CartPanel, CartItem, CartSummary, PaymentFooter, EmptyCart, EmptyProducts } from '@/components/pos'
+import { POSLayout, SearchBar, ProductGrid, ProductCard, CartPanel, CartItem, PaymentFooter, EmptyCart, EmptyProducts } from '@/components/pos'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
-import { Badge } from '@/components/ui/Badge'
 import { Modal } from '@/components/ui/Modal'
 import { SlidersHorizontal, ShoppingCart, UserPlus, Tag, X } from 'lucide-react'
 import { useCart } from '@/app/providers/CartProvider'
@@ -380,17 +379,14 @@ export function POS() {
       </div>
 
       <div className="lg:hidden">
-        <Button
-          variant="primary"
-          size="lg"
-          className="fixed bottom-4 right-4 z-40 shadow-lg rounded-full w-14 h-14"
-          onClick={() => setIsCartOpen(true)}
-        >
-          <ShoppingCart size={22} />
-          {itemsCount > 0 && (
-            <Badge variant="primary" className="absolute -top-1 -right-1">{itemsCount}</Badge>
-          )}
-        </Button>
+          <Button
+            variant="primary"
+            size="lg"
+            className="fixed bottom-4 right-4 z-40 shadow-lg rounded-full w-14 h-14"
+            onClick={() => setIsCartOpen(true)}
+          >
+            <ShoppingCart size={22} />
+          </Button>
 
         <AnimatePresence>
           {isCartOpen && (
@@ -402,12 +398,7 @@ export function POS() {
               className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[85vh] flex flex-col"
             >
               <div className="shrink-0 px-4 py-3 border-b border-neutral-200 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
-                  {itemsCount > 0 && (
-                    <Badge variant="primary" dot>{itemsCount}</Badge>
-                  )}
-                </div>
+                <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
                 <Button variant="ghost" size="sm" onClick={() => setIsCartOpen(false)} className="text-neutral-500">
                   Cerrar
                 </Button>
@@ -494,21 +485,11 @@ export function POS() {
                 </div>
               </div>
               {items.length > 0 && (
-                <div className="shrink-0 border-t border-neutral-200">
-                  <CartSummary
-                    subtotal={subtotal}
-                    total={total}
-                    itemsCount={itemsCount}
-                    discount={discount}
-                    footer={
-                      <PaymentFooter
-                        total={total}
-                        itemsCount={itemsCount}
-                        onPay={handleOpenPayment}
-                      />
-                    }
-                  />
-                </div>
+                <PaymentFooter
+                  total={total}
+                  itemsCount={itemsCount}
+                  onPay={handleOpenPayment}
+                />
               )}
             </motion.div>
           )}
