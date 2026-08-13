@@ -1,14 +1,6 @@
 import * as React from 'react'
 import { cn } from '@/utils/classNames'
 
-/**
- * Table - Mostrar datos tabulares.
- * 
- * @prop data - Array de datos
- * @prop columns - Definición de columnas
- * @prop keyExtractor - Función para key único
- * @prop emptyMessage - Mensaje cuando no hay datos
- */
 interface TableProps<T> {
   data: T[]
   columns: {
@@ -20,6 +12,7 @@ interface TableProps<T> {
   keyExtractor: (item: T, index: number) => string | number
   emptyMessage?: string
   className?: string
+  stickyFirstColumn?: boolean
 }
 
 export function Table<T>({
@@ -28,6 +21,7 @@ export function Table<T>({
   keyExtractor,
   emptyMessage = 'Sin datos',
   className,
+  stickyFirstColumn = true,
 }: TableProps<T>) {
   if (data.length === 0) {
     return (
@@ -38,43 +32,52 @@ export function Table<T>({
   }
 
   return (
-    <div className={cn('overflow-x-auto', className)}>
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-neutral-200">
-            {columns.map(column => (
-              <th
-                key={column.key}
-                className={cn(
-                  'px-4 py-3 font-semibold text-neutral-700 bg-neutral-50',
-                  column.className
-                )}
-              >
-                {column.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr
-              key={keyExtractor(item, index)}
-              className="border-b border-neutral-100 hover:bg-neutral-50 transition-colors"
-            >
-              {columns.map(column => (
-                <td
-                  key={column.key}
-                  className={cn('px-4 py-3 text-neutral-900', column.className)}
+    <div className={cn('relative', className)}>
+      <div className="overflow-x-auto -mx-4 sm:mx-0">
+        <div className="inline-block min-w-full align-middle">
+          <table className="min-w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-neutral-200">
+                {columns.map((column, idx) => (
+                  <th
+                    key={column.key}
+                    className={cn(
+                      'px-3 py-2.5 sm:px-4 sm:py-3 font-semibold text-neutral-700 bg-neutral-50 whitespace-nowrap',
+                      stickyFirstColumn && idx === 0 && 'sticky left-0 z-30 bg-neutral-50',
+                      column.className
+                    )}
+                  >
+                    {column.header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr
+                  key={keyExtractor(item, index)}
+                  className="border-b border-neutral-100 hover:bg-neutral-50 transition-colors"
                 >
-                  {column.render
-                    ? column.render(item)
-                    : (item as Record<string, unknown>)[column.key] as React.ReactNode}
-                </td>
+                  {columns.map((column, idx) => (
+                    <td
+                      key={column.key}
+                      className={cn(
+                        'px-3 py-2.5 sm:px-4 sm:py-3 text-neutral-900 whitespace-nowrap',
+                        stickyFirstColumn && idx === 0 && 'sticky left-0 z-10 bg-white',
+                        column.className
+                      )}
+                    >
+                      {column.render
+                        ? column.render(item)
+                        : (item as Record<string, unknown>)[column.key] as React.ReactNode}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   )
 }
