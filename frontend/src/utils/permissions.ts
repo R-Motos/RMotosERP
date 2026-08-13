@@ -41,7 +41,6 @@ const ROL_PERMISOS: Record<string, string[]> = {
     'productos',
     'clientes',
     'ventas',
-    'dashboard',
     'movimientos',
     'pos',
     'cupones',

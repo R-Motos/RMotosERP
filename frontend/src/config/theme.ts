@@ -3,7 +3,7 @@ import { Theme, ThemeConfig } from '@/types/theme'
 export const lightTheme: ThemeConfig = {
   mode: 'light',
   colors: {
-    primary: '#2563eb',
+    primary: '#D91E27',
     success: '#16a34a',
     warning: '#f59e0b',
     error: '#dc2626',
@@ -18,7 +18,7 @@ export const lightTheme: ThemeConfig = {
 export const darkTheme: ThemeConfig = {
   mode: 'dark',
   colors: {
-    primary: '#3b82f6',
+    primary: '#f87171',
     success: '#22c55e',
     warning: '#f59e0b',
     error: '#ef4444',

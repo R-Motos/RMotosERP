@@ -1,8 +1,7 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, Package, ShoppingCart, Users, Settings, Warehouse, FileText, CreditCard, FolderOpen, Tag, Ticket, User, ChevronLeft, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingCart, Users, Settings, Warehouse, FileText, CreditCard, FolderOpen, Tag, Ticket, User, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { cn } from '@/utils/classNames'
 import { useAuth } from '@/app/providers/AuthProvider'
-import { getModulesForRoles } from '@/utils/permissions'
 import { DrawerContainer } from './DrawerContainer'
 import { Tooltip } from '@/components/ui/Tooltip'
 import type { NavItem } from '@/types/navigation'
@@ -53,7 +52,7 @@ export function Sidebar({ open, onClose, collapsed = false, onToggleCollapsed }:
   const { user } = useAuth()
   const userModules = (user?.modules && user.modules.length > 0)
     ? user.modules
-    : getModulesForRoles(user?.roles.map(r => r.nombre) || [])
+    : []
 
   const filteredNavItems = navItems.filter(item => userModules.includes(item.modulo || ''))
 
@@ -93,32 +92,6 @@ export function Sidebar({ open, onClose, collapsed = false, onToggleCollapsed }:
     </nav>
   )
 
-  const mobileNavLinks = (
-    <nav className="flex-1 p-2 space-y-1 overflow-y-auto flex flex-col">
-      {filteredNavItems.map((item) => {
-        const Icon = iconMap[item.icon as keyof typeof iconMap]
-        return (
-          <NavLink
-            key={item.href}
-            to={item.href}
-            onClick={onClose}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
-              )
-            }
-          >
-            {Icon && <Icon size={20} />}
-            <span>{item.label}</span>
-          </NavLink>
-        )
-      })}
-    </nav>
-  )
-
   const desktopSidebar = (
     <aside className={cn(
       "fixed left-0 top-16 bottom-0 bg-white border-r border-neutral-200 hidden md:flex flex-col z-overlay transition-all duration-normal",
@@ -138,8 +111,40 @@ export function Sidebar({ open, onClose, collapsed = false, onToggleCollapsed }:
   )
 
   const mobileSidebarContent = (
-    <aside className="w-64 bg-white border-r border-neutral-200 flex flex-col h-full pt-16">
-      {mobileNavLinks}
+    <aside className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-200">
+        <span className="text-lg font-bold text-primary-600">RMotos</span>
+        <button
+          onClick={onClose}
+          className="p-2 rounded-lg text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
+          aria-label="Cerrar menú"
+        >
+          <X size={20} />
+        </button>
+      </div>
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto flex flex-col">
+        {filteredNavItems.map((item) => {
+          const Icon = iconMap[item.icon as keyof typeof iconMap]
+          return (
+            <NavLink
+              key={item.href}
+              to={item.href}
+              onClick={onClose}
+              className={({ isActive }) =>
+                cn(
+                  'flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors',
+                  isActive
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900'
+                )
+              }
+            >
+              {Icon && <Icon size={20} />}
+              <span>{item.label}</span>
+            </NavLink>
+          )
+        })}
+      </nav>
     </aside>
   )
 

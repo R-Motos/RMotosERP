@@ -57,8 +57,8 @@ export function DrawerContainer({ isOpen, onClose, children, position = 'right' 
       <div className="absolute inset-0 bg-overlay/40 backdrop-blur-sm" onClick={onClose} />
       <div
         className={cn(
-          'absolute top-0 bottom-0 bg-white shadow-xl w-full max-w-sm flex flex-col z-[60]',
-          position === 'right' ? 'right-0' : 'left-0'
+          'absolute top-0 bottom-0 bg-white shadow-xl w-[85vw] max-w-sm flex flex-col z-[60]',
+          position === 'right' ? 'right-0 rounded-l-2xl' : 'left-0 rounded-r-2xl'
         )}
       >
         {children}

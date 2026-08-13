@@ -51,7 +51,6 @@ ROL_PERMISOS_CONFIG = {
         'productos': ['ver', 'listar'],
         'clientes': ['ver', 'listar', 'crear', 'editar'],
         'ventas': ['ver', 'listar', 'crear', 'editar'],
-        'dashboard': ['ver', 'listar'],
         'movimientos': ['ver', 'listar'],
         'pos': ['ver', 'listar', 'crear'],
         'cupones': ['ver', 'listar'],
