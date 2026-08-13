@@ -193,7 +193,7 @@ export function POS() {
 
   return (
     <POSLayout>
-      <div className="flex flex-col lg:flex-row h-[calc(100vh-64px)]">
+      <div className="flex flex-col lg:flex-row h-[calc(100dvh-64px)]">
         <div className="flex-1 flex flex-col min-w-0">
           <div className="shrink-0 px-4 md:px-6 pt-4 md:pt-6 pb-3">
             <div className="flex gap-2 mb-3">

@@ -7,6 +7,8 @@ interface HeaderProps {
   onMenuClick?: () => void
 }
 
+const LOGO_URL = 'https://res.cloudinary.com/dzw0j83fi/image/upload/v1780002163/Rmotos_logo_ws3eyt.png'
+
 export function Header({ onMenuClick }: HeaderProps) {
   const { user, logout } = useAuth()
 
@@ -22,7 +24,20 @@ export function Header({ onMenuClick }: HeaderProps) {
             <Menu size={24} className="text-neutral-700" />
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+            <img
+              src={LOGO_URL}
+              alt="RMotos"
+              className="h-9 w-auto object-contain"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                target.style.display = 'none'
+                const fallback = target.nextElementSibling as HTMLElement | null
+                if (fallback) {
+                  fallback.style.display = 'flex'
+                }
+              }}
+            />
+            <div className="hidden w-8 h-8 bg-primary-600 rounded-lg items-center justify-center">
               <span className="text-white font-bold text-sm">R</span>
             </div>
             <span className="font-semibold text-lg text-neutral-900 hidden sm:block">
