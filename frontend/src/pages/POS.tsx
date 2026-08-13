@@ -279,38 +279,23 @@ export function POS() {
         <div className="hidden lg:block lg:w-[380px] xl:w-[420px] shrink-0">
           <CartPanel
             header={
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
-                  {itemsCount > 0 && (
-                    <Badge variant="primary" dot>{itemsCount}</Badge>
-                  )}
-                </div>
-                {items.length > 0 && (
-                  <Button variant="ghost" size="sm" onClick={clearCart} className="text-neutral-500">
-                    Limpiar
-                  </Button>
-                )}
-              </div>
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-neutral-900">Carrito</h2>
+              {items.length > 0 && (
+                <Button variant="ghost" size="sm" onClick={clearCart} className="text-neutral-500">
+                  Limpiar
+                </Button>
+              )}
+            </div>
             }
             footer={
               items.length > 0 ? (
-                <CartSummary
-                  subtotal={subtotal}
+                <PaymentFooter
                   total={total}
                   itemsCount={itemsCount}
-                  discount={discount}
-                  footer={
-                    <PaymentFooter
-                      total={total}
-                      itemsCount={itemsCount}
-                      onPay={handleOpenPayment}
-                    />
-                  }
+                  onPay={handleOpenPayment}
                 />
-              ) : (
-                <PaymentFooter total={0} itemsCount={0} />
-              )
+              ) : null
             }
           >
             <div className="space-y-2 mb-3">

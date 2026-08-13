@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
 import { cn } from '@/utils/classNames'
 import { Button } from '@/components/ui/Button'
-import { Badge } from '@/components/ui/Badge'
 
 const formatCOP = (value: number) => {
   return new Intl.NumberFormat('es-CO', {
@@ -31,10 +30,9 @@ export function PaymentFooter({ total, itemsCount, onPay, disabled, loading, act
       )}
     >
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Badge variant="primary" dot>{itemsCount}</Badge>
-          <span className="text-sm text-neutral-500 font-medium">artículos</span>
-        </div>
+        <span className="text-sm text-neutral-500 font-medium">
+          {itemsCount} {itemsCount === 1 ? 'artículo' : 'artículos'}
+        </span>
         <div className="text-right">
           <p className="text-xs text-neutral-500 uppercase tracking-wide font-medium">Total</p>
           <p className="text-2xl font-bold text-neutral-900 tabular-nums">{formatCOP(total)}</p>

@@ -14,15 +14,15 @@ from app.services import dashboard_service
 
 router = APIRouter(prefix='/dashboard', tags=['dashboard'], dependencies=[Depends(get_current_active_user)])
 
-require_finanzas = require_permission('finanzas')
+require_dashboard = require_permission('dashboard')
 
 
-@router.get('/resumen', response_model=ResumenResponse, dependencies=[Depends(require_permission('finanzas'))])
+@router.get('/resumen', response_model=ResumenResponse, dependencies=[Depends(require_dashboard)])
 def get_resumen(db: Session = Depends(get_db)):
     return dashboard_service.get_resumen(db)
 
 
-@router.get('/ventas', response_model=VentasResponse, dependencies=[Depends(require_permission('finanzas'))])
+@router.get('/ventas', response_model=VentasResponse, dependencies=[Depends(require_dashboard)])
 def get_ventas(
     fecha_inicio: datetime | None = Query(None),
     fecha_fin: datetime | None = Query(None),
@@ -31,11 +31,11 @@ def get_ventas(
     return dashboard_service.get_ventas_por_dia(db, fecha_inicio, fecha_fin)
 
 
-@router.get('/productos', response_model=ProductosResponse, dependencies=[Depends(require_permission('finanzas'))])
+@router.get('/productos', response_model=ProductosResponse, dependencies=[Depends(require_dashboard)])
 def get_productos(db: Session = Depends(get_db)):
     return dashboard_service.get_productos(db)
 
 
-@router.get('/finanzas', response_model=FinanzasResponse, dependencies=[Depends(require_permission('finanzas'))])
+@router.get('/finanzas', response_model=FinanzasResponse, dependencies=[Depends(require_dashboard)])
 def get_finanzas(db: Session = Depends(get_db)):
     return dashboard_service.get_finanzas(db)

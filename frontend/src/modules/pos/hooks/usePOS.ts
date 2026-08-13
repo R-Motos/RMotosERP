@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
+import { httpClient } from '@/services/httpClient'
 import { productService } from '@/modules/products/services/product.service'
 import type { Producto } from '@/modules/products/types/product'
 
@@ -81,7 +82,7 @@ export function usePOS(): UsePOSReturn {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const data = await productService.listCategorias()
+      const data = await httpClient.get<Array<{ id: number; nombre: string }>>('/pos/categorias')
       setCategories(data)
     } catch {
       // ignore
@@ -90,7 +91,7 @@ export function usePOS(): UsePOSReturn {
 
   const fetchMarcas = useCallback(async () => {
     try {
-      const data = await productService.listMarcas()
+      const data = await httpClient.get<Array<{ id: number; nombre: string }>>('/pos/marcas')
       setMarcas(data)
     } catch {
       // ignore
@@ -99,7 +100,7 @@ export function usePOS(): UsePOSReturn {
 
   const fetchEtiquetas = useCallback(async () => {
     try {
-      const data = await productService.listEtiquetas()
+      const data = await httpClient.get<Array<{ id: number; nombre: string }>>('/pos/etiquetas')
       setEtiquetas(data)
     } catch {
       // ignore

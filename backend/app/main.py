@@ -13,7 +13,7 @@ from app.middleware.error_handler import (
     validation_exception_handler,
 )
 from app.services.rbac_service import initialize_rbac
-from app.routers import categories, brands, tags, products, clients, users, auth, suppliers, inventory_movements, purchase_orders, purchase_receipts, sales, financial_movements, dashboard, audit_logs, system_config, coupons, roles
+from app.routers import categories, brands, tags, products, clients, users, auth, suppliers, inventory_movements, purchase_orders, purchase_receipts, sales, financial_movements, dashboard, audit_logs, system_config, coupons, roles, pos
 
 api_router = APIRouter(prefix='/api', redirect_slashes=False)
 
@@ -46,6 +46,7 @@ api_router.include_router(audit_logs.router)
 api_router.include_router(system_config.router)
 api_router.include_router(coupons.router)
 api_router.include_router(roles.router)
+api_router.include_router(pos.router)
 
 app = FastAPI(title='RMotos ERP', version='0.1.0', lifespan=lifespan)
 app.router.redirect_slashes = False
